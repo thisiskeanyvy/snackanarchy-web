@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SnackAnarchy - Le Chaos Culinaire</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌮</text></svg>">
+</head>
+<body>
+    
+    <!-- ============================================
+         SCENE 2D - LE MONDE DU JEU
+    ============================================= -->
+    <div class="game-world">
+        <!-- Ciel avec dégradé -->
+        <div class="sky"></div>
+        
+        <!-- Nuages animés -->
+        <div class="clouds">
+            <div class="cloud cloud-1">☁️</div>
+            <div class="cloud cloud-2">☁️</div>
+            <div class="cloud cloud-3">⛅</div>
+        </div>
+        
+        <!-- Bâtiments de fond (parallax) -->
+        <div class="background-buildings"></div>
+        
+        <!-- SCENE PRINCIPALE : Les deux restaurants -->
+        <div class="main-scene">
+            <!-- Restaurant TACOS (gauche) -->
+            <div class="restaurant restaurant-tacos">
+                <img src="assets/facade_tacos.png" alt="Tacos" class="facade">
+                <div class="interior">
+                    <img src="assets/floor_tacos.png" alt="Intérieur Tacos" class="floor-preview">
+                </div>
+                <!-- Chef Tacos animé -->
+                <div class="chef chef-tacos" id="chef1">
+                    <img src="assets/player1.png" alt="Chef Tacos" class="chef-sprite">
+                </div>
+            </div>
+            
+            <!-- LA RUE (centre) -->
+            <div class="street-area">
+                <div class="street-ground"></div>
+                <!-- Clients qui marchent -->
+                <div class="clients-container" id="clients"></div>
+                <!-- Titre flottant -->
+                <div class="floating-title">
+                    <h1>SNACK<span class="anarchy">ANARCHY</span></h1>
+                    <p class="tagline">🔥 2 Joueurs • 1 Rue • 0 Pitié 🔥</p>
+                </div>
+            </div>
+            
+            <!-- Restaurant KEBAB (droite) -->
+            <div class="restaurant restaurant-kebab">
+                <img src="assets/facade_kebab.png" alt="Kebab" class="facade">
+                <div class="interior">
+                    <img src="assets/floor_kebab.png" alt="Intérieur Kebab" class="floor-preview">
+                </div>
+                <!-- Chef Kebab animé -->
+                <div class="chef chef-kebab" id="chef2">
+                    <img src="assets/player2.png" alt="Chef Kebab" class="chef-sprite">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sol / Trottoir -->
+        <div class="ground">
+            <div class="sidewalk-pattern"></div>
+        </div>
+    </div>
+    
+    <!-- ============================================
+         INTERFACE UTILISATEUR (HUD)
+    ============================================= -->
+    
+    <!-- Barre de navigation style arcade -->
+    <nav class="arcade-nav">
+        <div class="nav-left">
+            <span class="coin">🪙</span>
+            <span class="credit">INSERT COIN</span>
+        </div>
+        <div class="nav-center">
+            <a href="#download" class="play-btn">
+                <span class="btn-text">▶ JOUER</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <span class="high-score">HI-SCORE: 999999</span>
+        </div>
+    </nav>
+    
+    <!-- Contenu scrollable -->
+    <main class="content">
+        
+        <!-- Section Hero (espace pour la scène) -->
+        <section class="hero-section">
+            <div class="hero-overlay">
+                <div class="press-start">
+                    <span class="blink">▼ SCROLL POUR CONTINUER ▼</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Caractéristiques -->
+        <section class="features-section" id="features">
+            <div class="section-container">
+                <h2 class="section-title">
+                    <span class="pixel-border">⚔️ GAME FEATURES ⚔️</span>
+                </h2>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="card-header tacos-theme">
+                            <img src="assets/player1.png" alt="P1" class="card-icon">
+                        </div>
+                        <div class="card-body">
+                            <h3>JOUEUR 1 - TACOS</h3>
+                            <p>Le chef mexicain avec son tablier rouge. Spécialité : Tacos XXL, Burritos, Nachos.</p>
+                            <div class="controls">
+                                <kbd>Z</kbd><kbd>Q</kbd><kbd>S</kbd><kbd>D</kbd> + <kbd>E</kbd>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="card-header vs-theme">
+                            <span class="vs-icon">VS</span>
+                        </div>
+                        <div class="card-body">
+                            <h3>ÉCRAN PARTAGÉ</h3>
+                            <p>Affrontement local en split-screen. Surveillez votre rival tout en gérant votre business !</p>
+                            <div class="mode-badge">2 PLAYERS</div>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="card-header kebab-theme">
+                            <img src="assets/player2.png" alt="P2" class="card-icon">
+                        </div>
+                        <div class="card-body">
+                            <h3>JOUEUR 2 - KEBAB</h3>
+                            <p>Le maître du döner avec son tablier bleu. Spécialité : Kebab, Durum, Assiettes.</p>
+                            <div class="controls">
+                                <kbd>↑</kbd><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd> + <kbd>⏎</kbd>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mécanique de jeu -->
+                <div class="mechanics-row">
+                    <div class="mechanic">
+                        <span class="mechanic-icon">💰</span>
+                        <h4>ARGENT</h4>
+                        <p>Servez les clients pour gagner de l'argent. Le plus riche gagne !</p>
+                    </div>
+                    <div class="mechanic">
+                        <span class="mechanic-icon">⭐</span>
+                        <h4>RÉPUTATION</h4>
+                        <p>Bonne réputation = plus de clients. Mauvaise = désert total.</p>
+                    </div>
+                    <div class="mechanic">
+                        <span class="mechanic-icon">💣</span>
+                        <h4>SABOTAGE</h4>
+                        <p>Infiltrez le resto adverse, volez, effrayez... tous les coups sont permis !</p>
+                    </div>
+                    <div class="mechanic">
+                        <span class="mechanic-icon">⚔️</span>
+                        <h4>ARMES</h4>
+                        <p>Ramassez des armes dans la rue. Utilisez-les avec sagesse... ou pas.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Galerie -->
+        <section class="gallery-section">
+            <h2 class="section-title">
+                <span class="pixel-border">🎮 SCREENSHOTS 🎮</span>
+            </h2>
+            <div class="gallery-grid">
+                <div class="gallery-item large">
+                    <img src="assets/floor_tacos.png" alt="Intérieur Tacos">
+                    <span class="gallery-label">Restaurant Tacos</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/facade_tacos.png" alt="Façade Tacos">
+                    <span class="gallery-label">Façade Tacos</span>
+                </div>
+                <div class="gallery-item">
+                    <img src="assets/facade_kebab.png" alt="Façade Kebab">
+                    <span class="gallery-label">Façade Kebab</span>
+                </div>
+                <div class="gallery-item large">
+                    <img src="assets/floor_kebab.png" alt="Intérieur Kebab">
+                    <span class="gallery-label">Restaurant Kebab</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Section Téléchargement -->
+        <section class="download-section" id="download">
+            <div class="download-box">
+                <div class="download-header">
+                    <h2>🚀 TÉLÉCHARGER LE JEU 🚀</h2>
+                    <p>Gratuit • Open Source • Python/Pygame</p>
+                </div>
+                
+                <div class="download-content">
+                    <div class="requirements">
+                        <h3>📋 Prérequis</h3>
+                        <ul>
+                            <li>✅ Python 3.8 ou supérieur</li>
+                            <li>✅ Pygame (installé via pip)</li>
+                            <li>✅ Windows / macOS / Linux</li>
+                            <li>✅ Un ami pour jouer !</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="install-code">
+                        <h3>💻 Installation</h3>
+                        <div class="terminal">
+                            <div class="terminal-header">
+                                <span class="dot red"></span>
+                                <span class="dot yellow"></span>
+                                <span class="dot green"></span>
+                                <span class="terminal-title">Terminal</span>
+                            </div>
+                            <div class="terminal-body">
+                                <code><span class="prompt">$</span> git clone https://github.com/repo/snackanarchy.git</code>
+                                <code><span class="prompt">$</span> cd snackanarchy</code>
+                                <code><span class="prompt">$</span> pip install -r requirements.txt</code>
+                                <code><span class="prompt">$</span> python main.py</code>
+                                <code class="output">🎮 Starting SnackAnarchy...</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="download-buttons">
+                    <a href="#" class="btn-download primary">
+                        <span class="btn-icon">⬇️</span>
+                        <span class="btn-label">
+                            <strong>Télécharger ZIP</strong>
+                            <small>v1.0 • 15 MB</small>
+                        </span>
+                    </a>
+                    <a href="#" class="btn-download secondary">
+                        <span class="btn-icon">📂</span>
+                        <span class="btn-label">
+                            <strong>Voir sur GitHub</strong>
+                            <small>Code source</small>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Footer -->
+        <footer class="game-footer">
+            <div class="footer-scene">
+                <img src="assets/client.png" alt="" class="footer-char c1">
+                <img src="assets/client1.png" alt="" class="footer-char c2">
+                <img src="assets/client2.png" alt="" class="footer-char c3">
+            </div>
+            <p class="footer-text">
+                🌮 SNACKANARCHY © 2026 🥙<br>
+                <small>Projet École • Made with Pygame & ❤️</small>
+            </p>
+            <p class="footer-credits">
+                PRESS START TO PLAY AGAIN
+            </p>
+        </footer>
+        
+    </main>
+    
+    <!-- Effets visuels -->
+    <div class="scanlines"></div>
+    <div class="vignette"></div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
