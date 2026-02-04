@@ -374,10 +374,26 @@ body {
     font-size: 0.7rem;
 }
 
+.nav-center {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
 .nav-left, .nav-right {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.doc-btn {
+    background: var(--kebab-primary) !important;
+}
+
+.doc-btn:hover {
+    background: #5a9ee8 !important;
 }
 
 .coin {
@@ -936,6 +952,10 @@ kbd {
    ===================================================== */
 
 @media (max-width: 1024px) {
+    .doc-btn {
+        display: none !important;
+    }
+    
     .features-grid {
         grid-template-columns: 1fr;
     }
