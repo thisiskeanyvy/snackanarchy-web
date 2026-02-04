@@ -228,7 +228,7 @@ function initInteractions() {
     // Boutons avec effet son (simulé)
     document.querySelectorAll('.btn-download, .play-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-            showNotification('Téléchargement bientôt disponible !');
+            showNotification('Redirection...');
         });
     });
 }
